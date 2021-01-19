@@ -12,5 +12,6 @@ namespace Api_face_recognition.Services
         Task<bool> SaveObject( string collectionName, Dictionary<string, object> dataObject);
         Dictionary<string, object> TransformObjectRecognition( string  IMAGE_URL, string FaceId);
         Dictionary<string, object> TransformObjectCompare( VerifyResult verifyObjectResult, Guid FaceId1, Guid FaceId2);
+        Dictionary<string, object> TransformObjectImageUpload( string  IMAGE_URL);
     }
 }
