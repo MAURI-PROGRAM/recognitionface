@@ -23,6 +23,7 @@ namespace Api_face_recognition.Controllers
     {
         private readonly ILogger<ImageUploadController> _logger;
         private readonly AzureStorageConfiguration _azureStorage;
+         private readonly  IFirebaseService _firebase;
 
 
         /// <inheritdoc />
@@ -31,10 +32,12 @@ namespace Api_face_recognition.Controllers
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="azureStorage"></param>
-        public ImageUploadController(ILogger<ImageUploadController> logger, IOptions<AzureStorageConfiguration> azureStorage)
+        /// <param name="firebase"></param>
+        public ImageUploadController(ILogger<ImageUploadController> logger,IFirebaseService firebase, IOptions<AzureStorageConfiguration> azureStorage)
         {
             _logger = logger;
             _azureStorage = azureStorage.Value ?? throw new ArgumentNullException(nameof(azureStorage));
+             _firebase = firebase;
         }
         [HttpPost]
         [Authorize]
