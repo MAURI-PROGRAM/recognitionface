@@ -61,6 +61,13 @@ namespace Api_face_recognition.Services
             return dataObject;
             
         } 
+        public  Dictionary<string, object> TransformObjectImageUpload( string  IMAGE_URL)
+        {
+            Dictionary<string, object> dataObject = new Dictionary<string, object>();
+            dataObject.Add("fecha",DateTime.UtcNow);
+            dataObject.Add("url", IMAGE_URL);
+            return dataObject;
+        }
 
 
     }
