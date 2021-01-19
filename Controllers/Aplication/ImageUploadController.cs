@@ -57,6 +57,8 @@ namespace Api_face_recognition.Controllers
                     blob.Upload(filePath);
                     Uri webazurestorage = new Uri(_azureStorage.UrlStorage );
                     Uri urlPhoto = new Uri(webazurestorage, _azureStorage.ContainerName + "/" +fileName);
+                    Dictionary<string, object> dataObject = _firebase.TransformObjectImageUpload( urlPhoto.ToString());
+                    bool save = await _firebase.SaveObject("image-upload",dataObject);
                     return new ObjectResult(new { urlPhoto}) { StatusCode = 200};
                 } else{
                     return new ObjectResult(new { error = "No se encontro ninguna imagen tipo" }) { StatusCode = 500};
