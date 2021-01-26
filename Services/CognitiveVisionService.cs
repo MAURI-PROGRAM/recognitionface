@@ -22,9 +22,14 @@ namespace Api_face_recognition.Services
 
         public  async Task<List<DetectedFace>> DetectFaceRecognize( string url, string recognition_model)
         {
-            IList<DetectedFace> detectedFaces = await _client.Face.DetectWithUrlAsync(url, recognitionModel: recognition_model, detectionModel: DetectionModel.Detection02);
+            var requiredFaceAttributes = new FaceAttributeType?[] {
+                FaceAttributeType.Age,
+                FaceAttributeType.Gender
+            };
+            IList<DetectedFace> detectedFaces = await _client.Face.DetectWithUrlAsync(url, recognitionModel: recognition_model,returnFaceAttributes: requiredFaceAttributes, detectionModel: DetectionModel.Detection01);
             return detectedFaces.ToList();
         }  
+ 
 
         public  async Task<VerifyResult> VerifyTwoFaces( Guid FaceId1, Guid FaceId2)
         {
