@@ -37,21 +37,21 @@ namespace Api_face_recognition
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
+            //Ini Habilitar Cors
+            services.AddCors();
 
             services.AddControllers();
             LoadAppSettings.IntoInjector(services, Configuration);
             DependencyInjectorHost.Configure(services);
             SwaggerStartupConfiguration.ConfigureService(services);
             AuthenticationConfiguration.AuthServices(services);
-            
-            //services.AddSingleton<ISingleton, Singleton>();
+            CorsStartupConfiguration.ConfigureServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            if (true)
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
@@ -61,6 +61,11 @@ namespace Api_face_recognition
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            //Habilitar Cors
+            //app.UseCors();
+            app.UseCors("FaceRecognition");
+
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
