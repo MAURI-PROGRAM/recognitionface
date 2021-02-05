@@ -35,6 +35,7 @@ namespace Api_face_recognition.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public  async Task<IActionResult> FacePerson (List<IFormFile> files)
         {
             try
