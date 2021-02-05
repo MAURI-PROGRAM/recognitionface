@@ -26,7 +26,7 @@ namespace Api_face_recognition.Services
                 FaceAttributeType.Age,
                 FaceAttributeType.Gender
             };
-            IList<DetectedFace> detectedFaces = await _client.Face.DetectWithUrlAsync(url, recognitionModel: recognition_model,returnFaceLandmarks: true,returnFaceAttributes: requiredFaceAttributes, detectionModel: DetectionModel.Detection01);
+            IList<DetectedFace> detectedFaces = await _client.Face.DetectWithUrlAsync(url, recognitionModel: recognition_model,returnFaceAttributes: requiredFaceAttributes, detectionModel: DetectionModel.Detection01);
             return detectedFaces.ToList();
         }  
  
