@@ -44,6 +44,7 @@ namespace Api_face_recognition.Controllers
             }
             catch (System.Exception error)
             {
+            
                 return new ObjectResult(new { error = error.Message , facesCount = 0 }) { StatusCode = 500};
             }
             
