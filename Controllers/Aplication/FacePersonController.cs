@@ -30,10 +30,40 @@ namespace Api_face_recognition.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public  IActionResult FacePerson (List<IFormFile> files)
+        //[Authorize]
+        public  async Task<IActionResult> FacePerson (List<IFormFile> files)
         {
-            return new ObjectResult(new { HayPersona=true, urlPhoto = "https://www.gstatic.com/tv/thumb/persons/983712/983712_v9_ba.jpg"}) { StatusCode = 200};
+            try{
+                int isEyesBlink = 0;
+                int notEyesBlink = 0;
+                Boolean EyeBlink = true;
+                
+                foreach (var formFile in files)
+                {
+                    var filePath = Path.GetTempFileName();
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                    using (Stream imageFileStream = System.IO.File.OpenRead(filePath))
+                    {
+                        // The second argument specifies to return the faceId, while
+                        // the third argument specifies not to return face landmarks.
+                        List<DetectedFace> facesDetected = await _cognitivevision.DetectFaceRecognizeStream(imageFileStream, RecognitionModel.Recognition03);
+                        EyeBlink = _cognitivevision.EyesBlink(facesDetected);
+                        isEyesBlink = EyeBlink?isEyesBlink+1:isEyesBlink;
+                        notEyesBlink = !EyeBlink?notEyesBlink+1:notEyesBlink;
+                    }
+                }
+                Boolean HayPersona = isEyesBlink>0 && notEyesBlink>0;
+                
+                return new ObjectResult(new { HayPersona , urlPhoto = "https://www.gstatic.com/tv/thumb/persons/983712/983712_v9_ba.jpg"}) { StatusCode = 200};
+            }
+            catch (System.Exception error)
+            {
+                return new ObjectResult(new { error = error.Message , facesCount = 0 }) { StatusCode = 500};
+            }
         }
         
     }
